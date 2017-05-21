@@ -91,7 +91,6 @@ function spot() {
 
     }
 
-
 };
 
 function movie() {
@@ -99,7 +98,6 @@ function movie() {
         movieN = "Mr. Nobody.";
 
         request('http://api.themoviedb.org/3/search/movie?api_key=5937f1b53d76a465b205fbdad5b48396&language=en-US&page=1&append_to_response=credits&query=' + movieN, function(error, response, body) {
-
 
             if (!error) {
 
@@ -116,7 +114,7 @@ function movie() {
                     console.log(JSON.parse(body).production_countries[0].name);
                     // console.log(JSON.parse(body).homepage);
                     for (var i = 0; i < 10; i++) {
-                        casts = casts + "" + JSON.parse(body).credits.cast[i].name;
+                        casts += ", " + JSON.parse(body).credits.cast[i].name;
                     }
                     console.log(casts);
                 });
@@ -129,9 +127,7 @@ function movie() {
         //console.log("im here");
         request('http://api.themoviedb.org/3/search/movie?api_key=5937f1b53d76a465b205fbdad5b48396&language=en-US&page=1&append_to_response=credits&query=' + movieN, function(error, response, body) {
 
-
             if (!error) {
-
 
                 movieId = JSON.parse(body).results[0].id;
                 console.log(JSON.parse(body).results[0].original_title);
@@ -139,20 +135,18 @@ function movie() {
                 console.log(JSON.parse(body).results[0].vote_average);
                 console.log(JSON.parse(body).results[0].original_language);
 
-
                 request('https://api.themoviedb.org/3/movie/' + movieId + '?api_key=5937f1b53d76a465b205fbdad5b48396&append_to_response=credits', function(error, response, body) {
 
                     console.log(JSON.parse(body).production_countries[0].name);
                     console.log(JSON.parse(body).homepage);
                     for (var i = 0; i < 10; i++) {
-                        casts = casts + "" + JSON.parse(body).credits.cast[i].name;
+                        casts += ", " + JSON.parse(body).credits.cast[i].name;
                     }
                     console.log(casts);
 
                 });
 
             }
-
 
         });
 
@@ -161,5 +155,36 @@ function movie() {
 };
 
 function what() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+
+        // If the code experiences any errors it will log the error to the console.
+        if (error) {
+            return console.log(error);
+        }
+
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+
+        switch (dataArr[0]) {
+            case "my-tweets":
+                twit();
+                break;
+
+            case "spotify-this-song":
+                songN = dataArr[1];
+                spot();
+                break;
+
+            case "movie-this":
+                movieN = dataArr[1];
+                movie();
+                break;
+
+            case "do-what-it-says":
+                what();
+                break;
+        }
+
+    });
 
 };
