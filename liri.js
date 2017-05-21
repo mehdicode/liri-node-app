@@ -45,7 +45,9 @@ function twit() {
         }
 
         for (var i = 0; i < tweets.length; i++) {
-            console.log(tweets[i].text);
+            var tText = tweets[i].text;
+            console.log(tText);
+            fs.appendFileSync('log.txt',"\r\n" + action + " => " + tText);
         }
     });
 
@@ -53,21 +55,29 @@ function twit() {
 };
 
 function spot() {
+
+
     if (!songN) {
         songN = "The Sign ace of base";
         spotify.search({
             type: 'track',
             query: songN
         }, function(error, data) {
+            var artist = data.tracks.items[0].artists[0].name;
+            var song = data.tracks.items[0].name;
+            var url = data.tracks.items[0].external_urls.spotify;
+            var album = data.tracks.items[0].album.name;
             if (error) {
 
                 return console.log(error);
             }
 
-            console.log(data.tracks.items[0].artists[0].name);
-            console.log(data.tracks.items[0].name);
-            console.log(data.tracks.items[0].external_urls.spotify);
-            console.log(data.tracks.items[0].album.name);
+
+            console.log(artist);
+            console.log(song);
+            console.log(url);
+            console.log(album);
+            fs.appendFileSync('log.txt',"\r\n" + action + " => " + artist + ", " + song + ", " + url + ", " + album);
 
         });
     } else {
@@ -76,16 +86,21 @@ function spot() {
             type: 'track',
             query: songN
         }, function(error, data) {
+            var artist = data.tracks.items[0].artists[0].name;
+            var song = data.tracks.items[0].name;
+            var url = data.tracks.items[0].external_urls.spotify;
+            var album = data.tracks.items[0].album.name;
 
             if (error) {
 
                 return console.log(error);
             }
 
-            console.log(data.tracks.items[0].artists[0].name);
-            console.log(data.tracks.items[0].name);
-            console.log(data.tracks.items[0].external_urls.spotify);
-            console.log(data.tracks.items[0].album.name);
+            console.log(artist);
+            console.log(song);
+            console.log(url);
+            console.log(album);
+            fs.appendFileSync('log.txt',"\r\n" + action + " " + songN + " => " + artist + ", " + song + ", " + url + ", " + album);
 
         });
 
@@ -103,20 +118,28 @@ function movie() {
 
                 // console.log(JSON.stringify(response, null, 2)); 
                 movieId = JSON.parse(body).results[0].id;
-                console.log(JSON.parse(body).results[0].original_title);
-                console.log(JSON.parse(body).results[0].release_date);
-                console.log(JSON.parse(body).results[0].vote_average);
-                console.log(JSON.parse(body).results[0].original_language);
+                var title = JSON.parse(body).results[0].original_title;
+                var date = JSON.parse(body).results[0].release_date;
+                var rate = JSON.parse(body).results[0].vote_average;
+                var lan = JSON.parse(body).results[0].original_language;
+                console.log(title);
+                console.log(date);
+                console.log(rate);
+                console.log(lan);
+                fs.appendFileSync('log.txt',"\r\n" + action + " " + movieN + " => " + title + ", " + date + ", " + rate + ", " + lan);
 
 
                 request('https://api.themoviedb.org/3/movie/' + movieId + '?api_key=5937f1b53d76a465b205fbdad5b48396&append_to_response=credits', function(error, response, body) {
 
-                    console.log(JSON.parse(body).production_countries[0].name);
-                    // console.log(JSON.parse(body).homepage);
+                    var country = JSON.parse(body).production_countries[0].name;
+                    var url = JSON.parse(body).homepage;
+                    console.log(country);
+                    console.log(url);
                     for (var i = 0; i < 10; i++) {
                         casts += ", " + JSON.parse(body).credits.cast[i].name;
                     }
                     console.log(casts);
+                    fs.appendFileSync('log.txt', country + ", " + url + ", " + casts);
                 });
             }
 
@@ -130,19 +153,28 @@ function movie() {
             if (!error) {
 
                 movieId = JSON.parse(body).results[0].id;
-                console.log(JSON.parse(body).results[0].original_title);
-                console.log(JSON.parse(body).results[0].release_date);
-                console.log(JSON.parse(body).results[0].vote_average);
-                console.log(JSON.parse(body).results[0].original_language);
+                var title = JSON.parse(body).results[0].original_title;
+                var date = JSON.parse(body).results[0].release_date;
+                var rate = JSON.parse(body).results[0].vote_average;
+                var lan = JSON.parse(body).results[0].original_language;
+
+                console.log(title);
+                console.log(date);
+                console.log(rate);
+                console.log(lan);
+                fs.appendFileSync('log.txt', "\r\n" +action + " " + movieN + " => " + title + ", " + date + ", " + rate + ", " + lan);
 
                 request('https://api.themoviedb.org/3/movie/' + movieId + '?api_key=5937f1b53d76a465b205fbdad5b48396&append_to_response=credits', function(error, response, body) {
 
-                    console.log(JSON.parse(body).production_countries[0].name);
-                    console.log(JSON.parse(body).homepage);
+                    var country = JSON.parse(body).production_countries[0].name;
+                    var url = JSON.parse(body).homepage;
+                    console.log(country);
+                    console.log(url);
                     for (var i = 0; i < 10; i++) {
                         casts += ", " + JSON.parse(body).credits.cast[i].name;
                     }
                     console.log(casts);
+                    fs.appendFileSync('log.txt', country + ", " + url + ", " + casts);
 
                 });
 
