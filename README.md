@@ -8,7 +8,7 @@
 
 
  `node liri.js movie-this '<movie name here>'`
- 	
+
  liri.js can take in one of the following commands:
 
    * `my-tweets`
@@ -18,3 +18,5 @@
    * `movie-this`
 
    * `do-what-it-says`
+
+   `note:` spotify API is not working.
